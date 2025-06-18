@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+:root {
+  /* Light theme */
+  --color-primary: 59 130 246;      /* rgb(59, 130, 246) */
+  --color-primary-foreground: 255 255 255;
+  --color-background: 255 255 255;
+  --color-foreground: 15 23 42;
+  --color-muted: 248 250 252;
+  --color-border: 226 232 240;
+
+  /* Spacing */
+  --container-padding: 1rem;
+  --header-height: 4rem;
+
+  /* Typography */
+  --font-family-display: 'Inter', system-ui, sans-serif;
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: 15 23 42;
+    --color-foreground: 248 250 252;
+    --color-muted: 30 41 59;
+    --color-border: 51 65 85;
+  }
+}
+
+/* Or class-based dark mode */
+.dark {
+  --color-background: 15 23 42;
+  --color-foreground: 248 250 252;
+}
+
+/* 3. BASE LAYER - Element defaults */
+@layer base {
+  /* Global element styling */
+  * {
+    @apply border-gray-200;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-white text-[red] antialiased;
+    font-family: var(--font-family-display);
+  }
+
+  /* Typography defaults */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold leading-tight;
+  }
+
+  h1 { @apply text-4xl lg:text-5xl; }
+  h2 { @apply text-3xl lg:text-4xl; }
+  h3 { @apply text-2xl lg:text-3xl; }
+
+  /* Links */
+  a {
+    @apply text-[red] hover:text-[red] transition-colors;
+  }
+
+  /* Form elements */
+  input, textarea, select {
+    @apply border-gray-300 rounded-md focus:border-[red] focus:ring-[red];
+  }
+}
+
+/* 4. COMPONENTS LAYER - Reusable component styles */
+@layer components {
+  /* Button variants */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply bg-[red] text-white hover:bg-[red] focus:ring-[red];
+  }
+}
+
+/* 5. UTILITIES LAYER - Custom utility classes */
+@layer utilities {
+  /* Text utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+}
