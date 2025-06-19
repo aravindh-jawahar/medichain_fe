@@ -1,9 +1,14 @@
-import React from 'react'
+import React from "react";
+import HeroSection from "../components/user/HeroSection";
+import About from "../components/user/About";
 
-const Dashboard = () => {
+const DashboardHero = () => {
   return (
-    <div>Dashboard</div>
-  )
-}
+    <div className="flex flex-col justify-center items-center">
+      <HeroSection />
+      <About />
+    </div>
+  );
+};
 
-export default Dashboard
+export default DashboardHero;
