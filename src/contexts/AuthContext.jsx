@@ -15,24 +15,30 @@ export function AuthProvider({ children }) {
     setIsLoading(false)
   }, [])
 
-  const login = async (email, password) => {
+  const login = async (email, password, type='advisor') => {
     setIsLoading(true)
-
-    // Mock authentication - replace with real API
-    if (email === 'demo@example.com' && password === 'password') {
-      const userData = {
-        id: '1',
-        name: 'Demo User',
-        email: email
-      }
-      setUser(userData)
-      localStorage.setItem('user', JSON.stringify(userData))
+    try {
+      // Mock authentication - replace with real API
+        // debugger
+        // if (email === 'demo@example.com' && password === 'password') {
+          const userData = {
+            id: '1',
+            name: 'Demo User',
+            email: email,
+            type
+          }
+          setUser(userData)
+          localStorage.setItem('user', JSON.stringify(userData))
+          setIsLoading(false)
+          // return true
+        // }
+    } catch (error) {
       setIsLoading(false)
-      return true
     }
 
-    setIsLoading(false)
-    return false
+
+    // setIsLoading(false)
+    // return false
   }
 
   const logout = () => {

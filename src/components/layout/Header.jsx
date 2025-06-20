@@ -1,20 +1,30 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useAuth } from "../../contexts/AuthContext"
 import { AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-
-const navItems = [
-  { label: "Medical Records", path: "/medical-records" },
-  { label: "Specialities", path: "/specialities" },
-  { label: "AI Service", path: "/ai-service" },
-];
 
 export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user: { type } } = useAuth()
 
   const isActive = (path) => location.pathname === path;
+
+  const navItems =useMemo(() =>{
+    return type==='advisor' ?
+        [
+          { label: "Dashboard", path: "/dashboard" },
+          { label: "Patients", path: "/patients" },
+          { label: "Requests", path: "/requests" },
+        ]:
+        [
+          { label: "Medical Records", path: "/medical-records" },
+          { label: "Specialities", path: "/specialities" },
+          { label: "AI Service", path: "/ai-service" },
+        ]}
+, [])
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-sm">
@@ -41,12 +51,12 @@ export default function Header() {
             </div>
           ))}
 
-          <button
+          {type==='patient' && <button
             onClick={() => navigate("/documents")}
             className="ml-4 !bg-[#057c8b] text-white px-4 py-2 !rounded-full !border-[#057c8b] text-sm font-medium !hover:bg-[#04606e] transition"
           >
             Upload your Documents
-          </button>
+          </button>}
         </nav>
 
         <button

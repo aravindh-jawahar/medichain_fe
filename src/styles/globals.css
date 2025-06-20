@@ -2,19 +2,12 @@
 
 :root {
   /* Light theme */
-  --color-primary: 59 130 246;      /* rgb(59, 130, 246) */
-  --color-primary-foreground: 255 255 255;
-  --color-background: 255 255 255;
-  --color-foreground: 15 23 42;
-  --color-muted: 248 250 252;
-  --color-border: 226 232 240;
-
-  /* Spacing */
-  --container-padding: 1rem;
-  --header-height: 4rem;
-
-  /* Typography */
-  --font-family-display: 'Inter', system-ui, sans-serif;
+  --color-primary: rgb(5, 124, 139);      /* rgb(59, 130, 246) */
+  --color-primary-foreground: rgb(250, 250, 250);
+  --color-background: rgb(255, 255, 255);
+  --color-foreground: rgb(250, 250, 250);
+  --color-muted: rgb(120, 120, 120);
+  --color-border: rgba(0, 0, 0, 0.05);
 }
 
 /* Dark theme */
@@ -37,7 +30,7 @@
 @layer base {
   /* Global element styling */
   * {
-    @apply border-gray-200;
+    @apply border-[var(--color-border)];
   }
 
   html {
@@ -73,7 +66,7 @@
 @layer components {
   /* Button variants */
   .btn {
-    @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply !bg-[#057c8b] text-white px-4 py-2 !rounded-full !border-[#057c8b] text-sm font-medium hover:!bg-[#04606e] transition;
   }
 
   .btn-primary {
