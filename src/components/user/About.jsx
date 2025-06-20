@@ -1,5 +1,11 @@
 import React from "react";
-import { ArrowDownRight } from "lucide-react";
+import {
+  ArrowDownRight,
+  HeartHandshake,
+  Microscope,
+  Plus,
+  Activity,
+} from "lucide-react";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
 
@@ -11,6 +17,7 @@ const stats = [
   { label: "Specialized services", value: 150, suffix: "+" },
   { label: "Years of experience", value: 15, suffix: "+" },
 ];
+
 const About = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
 
@@ -31,9 +38,8 @@ const About = () => {
 
         <div className="w-full md:w-1/2">
           <p className="text-xl sm:text-3xl lg:text-4xl font-bold leading-snug text-left">
-            We provide comprehensive detailed healthcare solutions from experts
-            in Medical support, diagnostics, and patient care run smoothly and
-            efficiently and managing tasks & clinical support.
+            We offer end-to-end AI-powered healthcare solutions, combining
+            technology and human expertise to deliver seamless medical support.
           </p>
         </div>
       </div>
@@ -63,6 +69,50 @@ const About = () => {
             <p className="text-sm text-gray-500">{stat.label}</p>
           </div>
         ))}
+      </div>
+
+      {/* Benefits Grid Section */}
+      <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-3">
+        <div className="flex flex-col items-start gap-3 p-6 rounded-xl border border-gray-200 shadow-sm bg-white">
+          <div className="w-10 h-10 bg-[#057c8b] text-white rounded-lg flex items-center justify-center shadow">
+            <HeartHandshake className="text-white" />
+          </div>
+          <h3 className="text-lg font-semibold">Support & care</h3>
+          <p className="text-sm text-gray-600">
+            Personalized healthcare services delivered with empathy & dedication
+          </p>
+        </div>
+
+        <div className="flex flex-col items-start gap-3 p-6 rounded-xl border border-gray-200 shadow-sm bg-white">
+          <div className="w-10 h-10 bg-[#057c8b] text-white rounded-lg flex items-center justify-center shadow">
+            <Microscope className="text-white" />
+          </div>
+          <h3 className="text-lg font-semibold">Cutting-edge innovation</h3>
+          <p className="text-sm text-gray-600">
+            Advanced treatments powered by modern technology and experts
+          </p>
+        </div>
+
+        <div className="flex flex-col items-start gap-3 p-6 rounded-xl border border-gray-200 shadow-sm bg-white">
+          <div className="w-10 h-10 bg-[#057c8b] text-white rounded-lg flex items-center justify-center shadow">
+            <Plus className="text-white" />
+          </div>
+          <h3 className="text-lg font-semibold">Reliable expertise</h3>
+          <p className="text-sm text-gray-600">
+            Work with qualified specialists who understand your healthcare
+          </p>
+        </div>
+
+        <div className="flex flex-col items-start gap-3 p-6 rounded-xl border border-gray-200 shadow-sm bg-white">
+          <div className="w-10 h-10 bg-[#057c8b] text-white rounded-lg flex items-center justify-center shadow">
+            <Activity className="text-white" />
+          </div>
+          <h3 className="text-lg font-semibold">Seamless support</h3>
+          <p className="text-sm text-gray-600">
+            First visit to follow-up care, we make every step smooth and
+            stress-free
+          </p>
+        </div>
       </div>
     </section>
   );

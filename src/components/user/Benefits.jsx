@@ -6,32 +6,49 @@ import {
   Microscope,
   Plus,
   Activity,
+  Bot,
+  PhoneCall,
+  Users,
   ArrowRight,
+  PackageCheck,
+  Trash2,
+  FileBarChart2,
 } from "lucide-react";
 
 const benefits = [
   {
-    title: "Support & care",
-    description:
-      "Personalized healthcare services delivered with empathy & dedication",
-    icon: <HeartHandshake className="text-white" />,
+    title: "AI Medical Assistance",
+    description: "Instant support via AI prompts for fast and reliable help",
+    icon: <Bot className="text-white" />,
   },
   {
-    title: "Cutting-edge innovation",
-    description: "Advanced treatments powered by modern technology and experts",
-    icon: <Microscope className="text-white" />,
+    title: "24/7 Consultation",
+    description:
+      "Talk to doctors anytime via chat, call, or face-to-face support",
+    icon: <PhoneCall className="text-white" />,
   },
   {
-    title: "Reliable expertise",
+    title: "Doorstep Services",
     description:
-      "Work with qualified specialists who understand your healthcare",
-    icon: <Plus className="text-white" />,
+      "Medicines delivered and medical waste safely disposed at home",
+    icon: <PackageCheck className="text-white" />,
   },
   {
-    title: "Seamless support",
+    title: "Medical Waste Management",
     description:
-      "First visit to follow-up care, we make every step smooth and stress-free",
-    icon: <Activity className="text-white" />,
+      "Safe disposal of used utensils and medical garbage collection",
+    icon: <Trash2 className="text-white" />,
+  },
+  {
+    title: "Past Health Record Insights",
+    description: "Analyze your past medical history to aid better diagnosis",
+    icon: <FileBarChart2 className="text-white" />,
+  },
+  {
+    title: "Geo-based Expert Locator",
+    description:
+      "Easily find nearby doctors, professionals, and waste collectors",
+    icon: <Users className="text-white" />,
   },
 ];
 
@@ -41,6 +58,7 @@ const Benefits = () => {
   const handleNavigate = () => {
     navigate("/ai-service");
   };
+
   return (
     <section className="py-5 md:py-20 bg-white text-gray-800 max-w-7xl !px-5">
       <div className="text-center mb-14 flex flex-col !gap-4">
@@ -49,7 +67,8 @@ const Benefits = () => {
         </span>
 
         <h2 className="text-2xl sm:text-3xl font-bold max-w-3xl mx-auto">
-          Grow with healthcare support shaped by trust & care
+          Grow with AI-driven healthcare rooted in trust, care, and continuous
+          support.
         </h2>
       </div>
 
