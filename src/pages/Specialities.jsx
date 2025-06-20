@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import {
   doctors,
   nurses,
@@ -22,6 +23,8 @@ const Specialities = () => {
   };
 
   const { list, type } = dataMap[activeTab];
+
+  const navigate = useNavigate();
 
   const renderCard = (person, index) => (
     <div
@@ -72,7 +75,10 @@ const Specialities = () => {
               : "Request Caretaking"}
           </button>
 
-          <button className="!bg-white !border !border-[#057c8b] text-[#057c8b] text-sm py-2 px-4 !rounded-full hover:!bg-[#e5f5f6] transition">
+          <button
+            onClick={() => navigate(`/chat/${person.name}`)}
+            className="!bg-white !border !border-[#057c8b] text-[#057c8b] text-sm py-2 px-4 !rounded-full hover:!bg-[#e5f5f6] transition"
+          >
             Consult {person.name}
           </button>
         </div>

@@ -1,16 +1,19 @@
 import React from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowDownRight } from "lucide-react";
+import CountUp from "react-countup";
+import { useInView } from "react-intersection-observer";
 
 const stats = [
-  { label: "Patients treated w/ care", value: "300K+" },
-  { label: "Positive recovery", value: "97%+" },
-  { label: "Certified professionals", value: "330+" },
-  { label: "Active support", value: "24/7" },
-  { label: "Specialized services", value: "110+" },
-  { label: "Years of experience", value: "15+" },
+  { label: "Patients treated with care", value: 300000, suffix: "+" },
+  { label: "Positive recovery", value: 99, suffix: "%+" },
+  { label: "Certified professionals", value: 630, suffix: "+" },
+  { label: "Active support", value: 24, suffix: "/7" },
+  { label: "Specialized services", value: 150, suffix: "+" },
+  { label: "Years of experience", value: 15, suffix: "+" },
 ];
-
 const About = () => {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
+
   return (
     <section className="py-5 md:py-20 bg-white text-gray-800 max-w-7xl">
       <div className="text-6xl font-extrabold !text-[#057c8b] text-center px-6 py-2">
@@ -35,11 +38,28 @@ const About = () => {
         </div>
       </div>
 
-      <div className="mt-16 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 text-center">
+      <div
+        ref={ref}
+        className="mt-16 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 text-center px-3"
+      >
         {stats.map((stat, index) => (
-          <div key={index}>
-            <ArrowUpRight className="text-[#057c8b] mx-auto mb-1 sm:mb-2" />
-            <p className="text-xl sm:text-2xl font-semibold">{stat.value}</p>
+          <div
+            key={index}
+            className="flex flex-col justify-center items-start text-start border border-gray-200 rounded-lg p-5"
+          >
+            <ArrowDownRight />
+            <p className="text-xl sm:text-2xl font-semibold">
+              {inView ? (
+                <CountUp
+                  end={stat.value}
+                  duration={2}
+                  separator=","
+                  suffix={stat.suffix}
+                />
+              ) : (
+                stat.suffix
+              )}
+            </p>
             <p className="text-sm text-gray-500">{stat.label}</p>
           </div>
         ))}

@@ -5,17 +5,18 @@ import PublicRoute from "./components/common/PublicRoute";
 import Layout from "./components/layout/Layout";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import Patients from "./pages/PatientsList"
+import Patients from "./pages/PatientsList";
 import Dashboard from "./pages/Dashboard";
-import SignUp from './pages/SignUp'
+import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
-import Requests from "./pages/Requests"
+import Requests from "./pages/Requests";
 import "./styles/globals.css";
 import MedicalRecords from "./pages/MedicalRecords";
 import AIService from "./pages/AIService";
 import DocumentUpload from "./pages/DocumentUpload";
 import Specialities from "./pages/Specialities";
+import Chat from "./pages/Chat";
 import { Toaster } from "sonner";
 
 function App() {
@@ -43,11 +44,14 @@ function App() {
             }
           />
 
-           <Route path="/signup" element={
-            <PublicRoute>
-              <SignUp />
-            </PublicRoute>
-          } />
+          <Route
+            path="/signup"
+            element={
+              <PublicRoute>
+                <SignUp />
+              </PublicRoute>
+            }
+          />
 
           {/* Protected Routes - require authentication */}
           <Route
@@ -66,6 +70,7 @@ function App() {
             <Route path="documents" element={<DocumentUpload />} />
             <Route path="patients" element={<Patients />} />
             <Route path="requests" element={<Requests />} />
+            <Route path="/chat/:name" element={<Chat />} />
           </Route>
 
           {/* 404 */}

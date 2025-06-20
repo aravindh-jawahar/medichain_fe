@@ -10,6 +10,7 @@ const HeroSection = () => {
   const handleNavigate = () => {
     navigate("/specialities");
   };
+
   return (
     <div className="bg-gradient-to-b from-[#fff] to-[#fff0] max-w-7xl h-full flex flex-col lg:flex-row items-center justify-between px-6 !py-25 gap-10">
       <div className="flex-1">

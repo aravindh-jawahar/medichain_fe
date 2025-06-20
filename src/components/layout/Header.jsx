@@ -27,7 +27,7 @@ export default function Header() {
 , [])
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-sm">
+    <section className="fixed top-0 left-0 w-full z-50 !bg-white/20 !backdrop-blur-md border-b border-white/30 shadow-md">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         <h1
           onClick={() => navigate("/")}
@@ -106,6 +106,6 @@ export default function Header() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </section>
   );
 }
