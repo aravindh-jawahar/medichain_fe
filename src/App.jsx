@@ -5,7 +5,9 @@ import PublicRoute from "./components/common/PublicRoute";
 import Layout from "./components/layout/Layout";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import Patients from "./pages/PatientsList";
+import Patients from "./pages/PatientsList"
+import Chat from "./pages/Chat"
+import InteractiveChat from "./pages/InteractiveChat"
 import Dashboard from "./pages/Dashboard";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
@@ -16,7 +18,6 @@ import MedicalRecords from "./pages/MedicalRecords";
 import AIService from "./pages/AIService";
 import DocumentUpload from "./pages/DocumentUpload";
 import Specialities from "./pages/Specialities";
-import Chat from "./pages/Chat";
 import { Toaster } from "sonner";
 
 function App() {
@@ -31,6 +32,15 @@ function App() {
             element={
               <PublicRoute>
                 <Login />
+              </PublicRoute>
+            }
+          />
+
+          <Route
+            path="/chat"
+            element={
+              <PublicRoute>
+                <InteractiveChat />
               </PublicRoute>
             }
           />

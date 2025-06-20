@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import InteractiveChat from "./InteractiveChat"
 
 const AIService = () => {
   const [diseaseData, setDiseaseData] = useState({});
@@ -6,6 +7,7 @@ const AIService = () => {
   const [formValues, setFormValues] = useState({});
   const [notes, setNotes] = useState("");
   const [aiResponse, setAiResponse] = useState(null);
+  const [activeChat, setActiveChat] = useState('common')
 
   useEffect(() => {
     const fetchDiseaseData = async () => {
@@ -96,8 +98,47 @@ const AIService = () => {
     }
   };
 
+      const handleSwitch = (direction) => {
+    if (activeChat !== direction) {
+      setActiveChat(direction);
+    }
+  };
+
+
   return (
-    <div className="min-h-screen pt-24 px-6 bg-gray-50 text-gray-800">
+    <div className="bg-gray-50">
+       <div className="flex flex-col justify-center text-[var(--color-primary)] font-montserrat px-4 py-8 bg-gray-50">
+              <div className="relative bg-[#f4f4f4] rounded-[37px] p-2 w-full max-w-[316px]">
+                {/* Sliding indicator */}
+                <div
+                  className={`absolute top-0 h-full w-1/2 rounded-[50px] bg-[var(--color-primary)] shadow-md transition-all duration-500 ease-[cubic-bezier(.88,-.35,.565,1.35)] z-0 ${
+                    activeChat === "common" ? "left-0" : "left-1/2"
+                  }`}
+                ></div>
+
+                {/* Tab buttons */}
+                <div className="relative z-10 flex text-center font-bold text-[16px]">
+                  <div
+                    className={`w-1/2 cursor-pointer select-none transition-colors ${
+                      activeChat === "common" ? "text-white" : "text-[var(--color-primary)]"
+                    }`}
+                    onClick={() => handleSwitch("common")}
+                  >
+                    Common
+                  </div>
+                  <div
+                    className={`w-1/2 cursor-pointer select-none transition-colors ${
+                      activeChat === "disease" ? "text-white" : "text-[var(--color-primary)]"
+                    }`}
+                    onClick={() => handleSwitch("disease")}
+                  >
+                    Preference
+                  </div>
+                </div>
+              </div>
+            </div>
+      {activeChat === 'common' && <InteractiveChat />}
+      {activeChat === 'disease' && <div className="min-h-screen pt-24 px-6 bg-gray-50 text-gray-800">
       <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-8">
         <h2 className="text-2xl font-bold text-[#057c8b] mb-6">
           AI Medical Assistance
@@ -215,6 +256,7 @@ const AIService = () => {
           </div>
         )}
       </div>
+    </div>}
     </div>
   );
 };

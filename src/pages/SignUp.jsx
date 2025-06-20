@@ -43,7 +43,7 @@ const Signup = () => {
           <div className="mx-auto h-16 w-16 bg-[var(--color-primary)] rounded-2xl flex items-center justify-center shadow-lg">
             <Stethoscope className="h-8 w-8 text-white" />
           </div>
-          <h2 className="mt-6 text-3xl font-bold text-gray-900">Join MediChain</h2>
+          <h2 className="mt-6 text-3xl font-bold text-gray-900">Join Cura</h2>
           <p className="mt-2 text-sm text-gray-600">
             Create your healthcare provider account
           </p>

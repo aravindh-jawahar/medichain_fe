@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { SendHorizonal, Paperclip } from "lucide-react";
+import InteractiveChat from "./InteractiveChat"
 
 const Chat = () => {
   const { name } = useParams();
