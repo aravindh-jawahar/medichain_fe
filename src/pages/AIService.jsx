@@ -1,62 +1,98 @@
-import React, { useState } from "react";
-import {
-  illnessOptions,
-  firstAidOptions,
-  fitnessOptions,
-  dietaryOptions,
-} from "../components/lib/constants/AiMock";
+import React, { useState, useEffect } from "react";
 
 const AIService = () => {
-  const [type, setType] = useState("");
-  const [concern, setConcern] = useState("");
+  const [diseaseData, setDiseaseData] = useState({});
+  const [selectedDisease, setSelectedDisease] = useState("");
+  const [formValues, setFormValues] = useState({});
   const [notes, setNotes] = useState("");
-  const [showNotes, setShowNotes] = useState(false);
   const [aiResponse, setAiResponse] = useState(null);
 
-  const handleTypeChange = (e) => {
-    const selectedType = e.target.value;
-    setType(selectedType);
-    setConcern("");
-    setShowNotes(false);
-    setNotes("");
+  useEffect(() => {
+    const fetchDiseaseData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/ai/diseases");
+        const json = await response.json();
+        setDiseaseData(json.data);
+      } catch (error) {
+        console.error("Error fetching disease options", error);
+      }
+    };
+
+    fetchDiseaseData();
+  }, []);
+
+  const handleDiseaseChange = (e) => {
+    const disease = e.target.value;
+    setSelectedDisease(disease);
+
+    const initialFields = {};
+    diseaseData[disease]?.forEach((item) => {
+      initialFields[item.field] = item.type === "boolean" ? false : "";
+    });
+    setFormValues(initialFields);
+    setAiResponse(null);
   };
 
-  const handleConcernChange = (e) => {
-    const value = e.target.value;
-    setConcern(value);
-    setShowNotes(value === "Others");
+  const handleInputChange = (field, type, e) => {
+    let value = e;
+    if (type === "boolean") {
+      value = e.target.checked;
+    } else if (type === "file") {
+      value = e.target.files[0];
+    } else {
+      value = e.target.value;
+    }
+
+    setFormValues((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // const payload = {
-    //   type,
-    //   concern,
-    //   notes: showNotes ? notes : "",
-    // };
+    const fields = diseaseData[selectedDisease] || [];
 
-    // Simulate AI response
-    setAiResponse({
-      heading: `AI Assistance: ${type}`,
-      content: `You selected "${concern}"${
-        showNotes ? ` with notes: "${notes}"` : ""
-      }. An AI-generated recommendation or insight will be provided here.`,
+    const userFields = {};
+    fields.forEach(({ field, description }) => {
+      const label = description || field;
+      userFields[label] = formValues[field];
     });
-  };
 
-  const getOptions = () => {
-    switch (type) {
-      case "Illness":
-        return illnessOptions;
-      case "First aid":
-        return firstAidOptions;
-      case "Fitness":
-        return fitnessOptions;
-      case "Dietary":
-        return dietaryOptions;
-      default:
-        return [];
+    if (notes.trim()) {
+      userFields["Additional Notes"] = notes;
+    }
+
+    const payload = {
+      diseaseName: selectedDisease,
+      userFields,
+    };
+
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/ai/personalised_summary",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const result = await response.json();
+
+      setAiResponse({
+        heading: `AI Assistance: ${selectedDisease}`,
+        content: result.response,
+      });
+    } catch (error) {
+      console.error("Error submitting to AI service", error);
+      setAiResponse({
+        heading: `AI Assistance: ${selectedDisease}`,
+        content: "There was an error fetching the AI response.",
+      });
     }
   };
 
@@ -70,98 +106,102 @@ const AIService = () => {
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <div>
             <label className="block text-sm font-medium mb-2">
-              Type of Assistance <span className="text-red-500">*</span>
+              Select Disease <span className="text-red-500">*</span>
             </label>
             <select
               required
-              value={type}
-              onChange={handleTypeChange}
+              value={selectedDisease}
+              onChange={handleDiseaseChange}
               className="w-full border rounded-lg p-2 text-sm"
             >
               <option value="">Select</option>
-              <option value="Illness">Illness</option>
-              <option value="First aid">First aid</option>
-              <option value="Pharmaceutical">Pharmaceutical</option>
-              <option value="Fitness">Fitness</option>
-              <option value="Dietary">Dietary</option>
-              <option value="Others">Others</option>
+              {Object.keys(diseaseData).map((disease) => (
+                <option key={disease} value={disease}>
+                  {disease}
+                </option>
+              ))}
             </select>
           </div>
 
-          {type && type !== "Pharmaceutical" && type !== "Others" && (
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Concern <span className="text-red-500">*</span>
-              </label>
-              <select
-                required
-                value={concern}
-                onChange={handleConcernChange}
-                className="w-full border rounded-lg p-2 text-sm"
-              >
-                <option value="">Select</option>
-                {getOptions().map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+          {selectedDisease &&
+            diseaseData[selectedDisease]?.map(
+              ({ field, type, inputType, description, options }) => (
+                <div key={field} className="mb-4">
+                  <label className="block font-medium">{field}</label>
+                  <p className="text-xs text-gray-500 mb-1">{description}</p>
+                  {inputType === "text" && (
+                    <input
+                      type="text"
+                      className="w-full border p-2 rounded"
+                      value={formValues[field]}
+                      onChange={(e) => handleInputChange(field, type, e)}
+                    />
+                  )}
+                  {inputType === "textarea" && (
+                    <textarea
+                      className="w-full border p-2 rounded"
+                      value={formValues[field]}
+                      onChange={(e) => handleInputChange(field, type, e)}
+                    />
+                  )}{" "}
+                  {inputType === "dropdown" && (
+                    <select
+                      className="w-full border p-2 rounded"
+                      value={formValues[field]}
+                      onChange={(e) => handleInputChange(field, type, e)}
+                    >
+                      <option value="">Select</option>
+                      {options.map((opt, idx) => (
+                        <option key={idx} value={opt}>
+                          {opt}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                  {inputType === "checkbox" && (
+                    <div className="mt-1">
+                      <input
+                        type="checkbox"
+                        checked={formValues[field] || false}
+                        onChange={(e) => handleInputChange(field, type, e)}
+                      />{" "}
+                      <span className="text-sm">Yes</span>
+                    </div>
+                  )}
+                  {inputType === "file" && (
+                    <input
+                      type="file"
+                      className="w-full"
+                      onChange={(e) => handleInputChange(field, type, e)}
+                    />
+                  )}
+                </div>
+              )
+            )}
 
-          {type === "Pharmaceutical" && (
+          {selectedDisease && (
             <div>
               <label className="block text-sm font-medium mb-2">
-                Enter Medicine Name <span className="text-red-500">*</span>
-              </label>
-              <input
-                required
-                type="text"
-                value={concern}
-                onChange={(e) => setConcern(e.target.value)}
-                placeholder="e.g. Paracetamol"
-                className="w-full border rounded-lg p-2 text-sm"
-              />
-            </div>
-          )}
-
-          {type === "Others" && (
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Describe your concern <span className="text-red-500">*</span>
-              </label>
-              <textarea
-                required
-                value={concern}
-                onChange={(e) => setConcern(e.target.value)}
-                placeholder="Describe the medical issue or question..."
-                className="w-full border rounded-lg p-3 text-sm"
-                rows={4}
-              />
-            </div>
-          )}
-
-          {showNotes && (
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Additional Notes (optional but recommended)
+                Additional Notes
               </label>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="Share any symptoms, duration, history etc."
+                placeholder="Optional notes or context"
                 className="w-full border rounded-lg p-3 text-sm"
                 rows={3}
               />
             </div>
           )}
 
-          <button
-            type="submit"
-            className="self-start !bg-[#057c8b] hover:!bg-[#04606e] text-white px-6 py-2 !rounded-full text-sm font-medium transition"
-          >
-            Submit for AI Assistance
-          </button>
+          {selectedDisease && (
+            <button
+              type="submit"
+              className="self-start bg-[#057c8b] hover:bg-[#04606e] text-white px-6 py-2 rounded-full text-sm font-medium transition"
+            >
+              Submit for AI Assistance
+            </button>
+          )}
         </form>
 
         {aiResponse && (
@@ -169,7 +209,9 @@ const AIService = () => {
             <h3 className="font-bold text-[#057c8b] mb-2">
               {aiResponse.heading}
             </h3>
-            <p className="text-sm text-gray-700">{aiResponse.content}</p>
+            <div className="text-sm text-gray-700 whitespace-pre-wrap">
+              <div dangerouslySetInnerHTML={{ __html: aiResponse.content }} />
+            </div>
           </div>
         )}
       </div>
