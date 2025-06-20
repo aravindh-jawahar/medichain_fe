@@ -10,6 +10,7 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const {
     user: { type },
+    logout
   } = useAuth();
 
   const isActive = (path) => location.pathname === path;
@@ -61,6 +62,8 @@ export default function Header() {
               Ask CuraAI
             </button>
           )}
+
+          <button className="btn" onClick={async()=> await logout()}>Log Out</button>
         </nav>
 
         <button
